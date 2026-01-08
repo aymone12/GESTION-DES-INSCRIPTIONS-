@@ -128,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
 
                                     <div class="d-flex justify-content-end gap-2 pt-3">
-                                        <a href="cours.html" class="btn btn-light btn-lg rounded-pill px-4">Annuler</a>
+                                        <a href="index_cours.php" class="btn btn-light btn-lg rounded-pill px-4">Annuler</a>
                                         <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">Créer le cours</button>
                                     </div>
                                 </form>

@@ -119,3 +119,33 @@ function all_cours_with_professeur()
         return [];
     }
 }
+
+/*============================================================*/
+/* Compter le nombre total de cours                           */
+/*============================================================*/
+function count_cours()
+{
+    try {
+        $cnx = connecter_db();
+        $r = $cnx->prepare("SELECT COUNT(*) FROM Cours");
+        $r->execute();
+        return $r->fetchColumn();
+    } catch (\Throwable $th) {
+        return 0;
+    }
+}
+
+/*============================================================*/
+/* Compter les cours par catégorie                            */
+/*============================================================*/
+function count_cours_by_category($categoryName)
+{
+    try {
+        $cnx = connecter_db();
+        $r = $cnx->prepare("SELECT COUNT(*) FROM Cours WHERE intitule LIKE ?");
+        $r->execute(["%" . $categoryName . "%"]);
+        return $r->fetchColumn();
+    } catch (\Throwable $th) {
+        return 0;
+    }
+}

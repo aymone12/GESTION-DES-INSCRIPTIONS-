@@ -25,6 +25,23 @@
         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
             background: #6c757d;
         }
+
+        /* Fix dropdown menu styling */
+        .dropdown-menu {
+            min-width: 150px;
+            border: 1px solid rgba(0,0,0,.15);
+            border-radius: 0.375rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -33,7 +50,14 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <?php $active = 'dashboard'; include_once("../includes/_menu.php"); ?>
+            <?php 
+            $active = 'dashboard'; 
+            include_once("../includes/_menu.php");
+            include_once("../functions/function_cours.php");
+            include_once("../functions/function_etudiant.php");
+            include_once("../functions/function_professeur.php");
+            include_once("../functions/function_inscription.php");
+            ?>
 
             <!-- Content -->
             <div class="col py-3 h-100 d-flex flex-column">
@@ -45,8 +69,8 @@
                 <div class="flex-grow-1">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="fw-bold mb-0 text-dark">Tableau de Bord</h3>
-                        <button class="btn btn-primary btn-sm rounded-pill shadow-sm"><i
-                                class="bi bi-download me-2"></i>Rapport</button>
+                        <a href="download_report.php" class="btn btn-primary btn-sm rounded-pill shadow-sm"><i
+                                class="bi bi-download me-2"></i>Rapport</a>
                     </div>
 
                     <!-- Stats Cards -->
@@ -58,11 +82,10 @@
                                         <div class="bg-primary bg-opacity-10 p-3 rounded-4 text-primary">
                                             <i class="bi bi-people fs-4"></i>
                                         </div>
-                                        <span
-                                            class="badge bg-success bg-opacity-10 text-success rounded-pill">+2.5%</span>
+
                                     </div>
                                     <h6 class="text-muted text-uppercase small fw-bold mb-1">Étudiants</h6>
-                                    <h2 class="fw-bold mb-0 text-dark">1,254</h2>
+                                    <h2 class="fw-bold mb-0 text-dark"><?= count_etudiants() ?></h2>
                                 </div>
                             </div>
                         </div>
@@ -73,11 +96,10 @@
                                         <div class="bg-info bg-opacity-10 p-3 rounded-4 text-info">
                                             <i class="bi bi-person-video3 fs-4"></i>
                                         </div>
-                                        <span
-                                            class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill">0%</span>
+
                                     </div>
                                     <h6 class="text-muted text-uppercase small fw-bold mb-1">Professeurs</h6>
-                                    <h2 class="fw-bold mb-0 text-dark">42</h2>
+                                    <h2 class="fw-bold mb-0 text-dark"><?= count_professeurs() ?></h2>
                                 </div>
                             </div>
                         </div>
@@ -88,10 +110,10 @@
                                         <div class="bg-warning bg-opacity-10 p-3 rounded-4 text-warning">
                                             <i class="bi bi-book fs-4"></i>
                                         </div>
-                                        <span class="badge bg-success bg-opacity-10 text-success rounded-pill">+5</span>
+
                                     </div>
                                     <h6 class="text-muted text-uppercase small fw-bold mb-1">Cours</h6>
-                                    <h2 class="fw-bold mb-0 text-dark">36</h2>
+                                    <h2 class="fw-bold mb-0 text-dark"><?= count_cours() ?></h2>
                                 </div>
                             </div>
                         </div>
@@ -102,121 +124,62 @@
                                         <div class="bg-danger bg-opacity-10 p-3 rounded-4 text-danger">
                                             <i class="bi bi-graph-up-arrow fs-4"></i>
                                         </div>
-                                        <span
-                                            class="badge bg-success bg-opacity-10 text-success rounded-pill">+12%</span>
+
                                     </div>
                                     <h6 class="text-muted text-uppercase small fw-bold mb-1">Revenus</h6>
-                                    <h2 class="fw-bold mb-0 text-dark">12k €</h2>
+                                    <h2 class="fw-bold mb-0 text-dark"><?= number_format(calculate_total_revenue(), 2) ?> dh</h2>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Charts Section -->
-                    <div class="row g-4 mb-4">
-                        <div class="col-12 col-lg-8">
-                            <div class="card shadow border-0 rounded-4 h-100">
-                                <div
-                                    class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0 fw-bold">Inscriptions Mensuelles</h5>
-                                    <div class="dropdown">
-                                        <button class="btn btn-light btn-sm rounded-circle" type="button"
-                                            data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Cette année</a></li>
-                                            <li><a class="dropdown-item" href="#">Ce mois</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-body pt-0">
-                                    <!-- CSS Chart -->
-                                    <div class="d-flex align-items-end justify-content-between px-2"
-                                        style="height: 250px;">
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm"
-                                                style="height: 45%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Jan</small>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm opacity-50"
-                                                style="height: 60%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Fév</small>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm"
-                                                style="height: 75%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Mar</small>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm opacity-75"
-                                                style="height: 50%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Avr</small>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm"
-                                                style="height: 80%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Mai</small>
-                                        </div>
-                                        <div class="d-flex flex-column align-items-center w-100">
-                                            <div class="w-50 bg-primary bg-gradient rounded-top shadow-sm"
-                                                style="height: 65%"></div>
-                                            <small class="text-muted mt-2" style="font-size: 0.7rem;">Juin</small>
-                                        </div>
-                                    </div>
+                        <!-- list of etudiant -->
+                         <div class="card shadow border-0 rounded-4">
+                            <div class="card-header bg-white border-0 py-3">
+                                <h5 class="mb-0 fw-bold">Étudiants Récents</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th scope="col" class="ps-4 text-muted small text-uppercase">Nom</th>
+                                                <th scope="col" class="text-muted small text-uppercase">Email</th>
+                                                <th scope="col" class="text-muted small text-uppercase">CNE</th>
+                                                <th scope="col" class="text-muted small text-uppercase">Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="border-top-0">
+                                            <?php 
+                                                $etudiants_list = lister_etudiants();
+                                                $etudiants_list = array_slice($etudiants_list, 0, 5);
+                                                if (count($etudiants_list) > 0):
+                                                    foreach ($etudiants_list as $etudiant):
+                                            ?>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($etudiant['prenom'] . ' ' . $etudiant['nom']) ?>&background=random"
+                                                            class="rounded-circle" width="32" height="32" alt="">
+                                                        <span class="ms-3 fw-bold text-dark"><?= htmlspecialchars($etudiant['nom'] . ' ' . $etudiant['prenom']) ?></span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-muted"><?= htmlspecialchars($etudiant['email']) ?></td>
+                                                <td class="text-muted"><?= htmlspecialchars($etudiant['cne']) ?></td>
+                                                <td class="text-muted"><?= date('d M Y', strtotime($etudiant['dateInscription'])) ?></td>
+                                            </tr>
+                                            <?php 
+                                                    endforeach;
+                                                else:
+                                            ?>
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4 text-muted">Aucun étudiant</td>
+                                            </tr>
+                                            <?php endif; ?>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4">
-                            <div class="card shadow border-0 rounded-4 h-100">
-                                <div class="card-header bg-white border-0 py-3">
-                                    <h5 class="mb-0 fw-bold">Top Catégories</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-4">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="fw-medium">Développement Web</span>
-                                            <span class="text-muted small">85%</span>
-                                        </div>
-                                        <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                            <div class="progress-bar bg-primary bg-gradient rounded-pill"
-                                                role="progressbar" style="width: 85%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="fw-medium">Data Science</span>
-                                            <span class="text-muted small">60%</span>
-                                        </div>
-                                        <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                            <div class="progress-bar bg-info bg-gradient rounded-pill"
-                                                role="progressbar" style="width: 60%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="fw-medium">Marketing</span>
-                                            <span class="text-muted small">45%</span>
-                                        </div>
-                                        <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                            <div class="progress-bar bg-warning bg-gradient rounded-pill"
-                                                role="progressbar" style="width: 45%"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-0">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <span class="fw-medium">Design</span>
-                                            <span class="text-muted small">30%</span>
-                                        </div>
-                                        <div class="progress rounded-pill bg-light" style="height: 8px;">
-                                            <div class="progress-bar bg-danger bg-gradient rounded-pill"
-                                                role="progressbar" style="width: 30%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Recent Table -->
                     <div class="card shadow border-0 rounded-4">
                         <div
@@ -238,69 +201,52 @@
                                         </tr>
                                     </thead>
                                     <tbody class="border-top-0">
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Jean+Dupont&background=random"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <div class="ms-3">
-                                                        <p class="fw-bold mb-0 text-dark">Jean Dupont</p>
-                                                        <p class="text-muted small mb-0">jean@example.com</p>
+                                        <?php 
+                                            // Ensure function exists to prevent crash if file not reloaded
+                                            if(function_exists('get_recent_inscriptions')) {
+                                                $inscriptions = get_recent_inscriptions(3); 
+                                            } else {
+                                                $inscriptions = [];
+                                            }
+                                        ?>
+                                        <?php if (count($inscriptions) > 0): ?>
+                                            <?php foreach ($inscriptions as $inscription): ?>
+                                            <tr>
+                                                <td class="ps-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($inscription['prenom'] . ' ' . $inscription['nom']) ?>&background=random"
+                                                            class="rounded-circle" width="36" height="36" alt="">
+                                                        <div class="ms-3">
+                                                            <p class="fw-bold mb-0 text-dark"><?= htmlspecialchars($inscription['nom'] . ' ' . $inscription['prenom']) ?></p>
+                                                            <p class="text-muted small mb-0"><?= htmlspecialchars($inscription['email']) ?></p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td><span class="fw-medium">Dev Fullstack</span></td>
-                                            <td class="text-muted">05 Jan 2026</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Confirmé</span>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle"><i
-                                                        class="bi bi-three-dots-vertical"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Alice+Martin&background=random"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <div class="ms-3">
-                                                        <p class="fw-bold mb-0 text-dark">Alice Martin</p>
-                                                        <p class="text-muted small mb-0">alice@example.com</p>
+                                                </td>
+                                                <td><span class="fw-medium"><?= htmlspecialchars($inscription['nomCours']) ?></span></td>
+                                                <td class="text-muted"><?= date('d M Y', strtotime($inscription['dateInscription'])) ?></td>
+                                                <td><span
+                                                        class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Confirmé</span>
+                                                </td>
+                                                <td class="text-end pe-4">
+                                                    <div class="d-flex gap-1 justify-content-end">
+                                                        <a href="../Inscription/modifier_inscription.php?id=<?= $inscription['idInscription'] ?>" 
+                                                           class="btn btn-sm btn-outline-warning rounded-circle" title="Modifier">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <a href="../Inscription/supprimer_inscription.php?id=<?= $inscription['idInscription'] ?>" 
+                                                           class="btn btn-sm btn-outline-danger rounded-circle" title="Supprimer"
+                                                           onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette inscription ?')">
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td><span class="fw-medium">UX/UI Design</span></td>
-                                            <td class="text-muted">04 Jan 2026</td>
-                                            <td><span
-                                                    class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3">En
-                                                    attente</span></td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle"><i
-                                                        class="bi bi-three-dots-vertical"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Pierre+Lefevre&background=random"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <div class="ms-3">
-                                                        <p class="fw-bold mb-0 text-dark">Pierre Lefevre</p>
-                                                        <p class="text-muted small mb-0">pierre@example.com</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><span class="fw-medium">Data Science</span></td>
-                                            <td class="text-muted">03 Jan 2026</td>
-                                            <td><span
-                                                    class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Refusé</span>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle"><i
-                                                        class="bi bi-three-dots-vertical"></i></button>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4 text-muted">Aucune inscription récente</td>
+                                            </tr>
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -313,6 +259,17 @@
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Ensure dropdowns work properly
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+        });
+    </script>
 </body>
 
 </html>

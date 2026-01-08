@@ -8,6 +8,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
+
+<?php
+include_once("../functions/function_etudiant.php");
+
+$etudiants = lister_etudiants();
+?>
         .sidebar-scroll::-webkit-scrollbar {
             width: 6px;
         }
@@ -28,11 +34,14 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <?php $active = 'etudiants'; include_once("../includes/_menu.php"); ?>
+            <?php 
+                include_once("../includes/_menu.php"); 
+                include_once("../functions/function_etudiant.php");
+                $etudiants = lister_etudiants();
+            ?>
 
             <!-- Content -->
             <div class="col py-3 h-100 d-flex flex-column">
-                <!-- Header -->
                 <!-- Header -->
                 <?php include_once("../includes/_navbar.php"); ?>
 
@@ -41,14 +50,8 @@
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="fw-bold mb-0 text-dark">Gestion des Étudiants</h3>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-primary rounded-pill shadow-sm py-2 px-3"><i
-                                    class="bi bi-plus-lg me-2"></i>Ajouter</button>
-                            <button
-                                class="btn btn-white bg-white border rounded-pill shadow-sm py-2 px-3 text-secondary"><i
-                                    class="bi bi-filter me-2"></i>Filtrer</button>
-                            <button
-                                class="btn btn-white bg-white border rounded-pill shadow-sm py-2 px-3 text-secondary"><i
-                                    class="bi bi-download me-2"></i>Exporter</button>
+                            <a href="create_etudiants.php" class="btn btn-primary rounded-pill shadow-sm py-2 px-3"><i
+                                    class="bi bi-plus-lg me-2"></i>Ajouter</a>
                         </div>
                     </div>
 
@@ -76,7 +79,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="border-top-0">
-                                        <!-- Row 1 -->
+                                        <?php foreach ($etudiants as $etudiant) { ?>
                                         <tr>
                                             <td class="ps-4">
                                                 <div class="form-check">
@@ -85,133 +88,37 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Jean+Dupont&background=0D6EFD&color=fff"
+                                                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($etudiant['nom'] . ' ' . $etudiant['prenom']); ?>&background=0D6EFD&color=fff"
                                                         class="rounded-circle" width="36" height="36" alt="">
-                                                    <span class="ms-3 fw-bold text-dark">Jean Dupont</span>
+                                                    <span class="ms-3 fw-bold text-dark"><?= $etudiant['nom'] . ' ' . $etudiant['prenom']; ?></span>
                                                 </div>
                                             </td>
-                                            <td class="text-muted">jean.dupont@email.com</td>
-                                            <td class="text-muted">+33 6 12 34 56 78</td>
-                                            <td class="text-muted">3</td>
-                                            <td class="text-muted">15 Jan 2025</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Actif</span>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle me-1"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-light rounded-circle text-danger"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <!-- Row 2 -->
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Alice+Martin&background=ffc107&color=000"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <span class="ms-3 fw-bold text-dark">Alice Martin</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-muted">alice.m@email.com</td>
-                                            <td class="text-muted">+33 6 98 76 54 32</td>
-                                            <td class="text-muted">1</td>
-                                            <td class="text-muted">20 Feb 2025</td>
-                                            <td><span
-                                                    class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3">En
-                                                    pause</span>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle me-1"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-light rounded-circle text-danger"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <!-- Row 3 -->
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Pierre+Lefevre&background=0dcaf0&color=000"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <span class="ms-3 fw-bold text-dark">Pierre Lefevre</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-muted">pierre.l@email.com</td>
-                                            <td class="text-muted">+33 6 11 22 33 44</td>
-                                            <td class="text-muted">5</td>
-                                            <td class="text-muted">10 Dec 2024</td>
-                                            <td><span
-                                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Actif</span>
-                                            </td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle me-1"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-light rounded-circle text-danger"><i
-                                                        class="bi bi-trash"></i></button>
-                                            </td>
-                                        </tr>
-                                        <!-- Row 4 -->
-                                        <tr>
-                                            <td class="ps-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="https://ui-avatars.com/api/?name=Sophie+Bernard&background=dc3545&color=fff"
-                                                        class="rounded-circle" width="36" height="36" alt="">
-                                                    <span class="ms-3 fw-bold text-dark">Sophie Bernard</span>
-                                                </div>
-                                            </td>
-                                            <td class="text-muted">sophie.b@email.com</td>
-                                            <td class="text-muted">+33 6 55 44 33 22</td>
+                                            <td class="text-muted"><?= $etudiant['email'] ?? 'N/A'; ?></td>
+                                            <td class="text-muted"><?= $etudiant['telephone'] ?? 'N/A'; ?></td>
                                             <td class="text-muted">0</td>
-                                            <td class="text-muted">01 Mar 2025</td>
-                                            <td><span
-                                                    class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Inactif</span>
+                                            <td class="text-muted"><?= $etudiant['dateInscription'] ?? '-'; ?></td>
+                                            <td>
+                                                <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Actif</span>
                                             </td>
                                             <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-light rounded-circle me-1"><i
-                                                        class="bi bi-pencil"></i></button>
-                                                <button class="btn btn-sm btn-light rounded-circle text-danger"><i
-                                                        class="bi bi-trash"></i></button>
+                                                <a href="modifier_etudiants.php?id=<?= $etudiant['id']; ?>" class="btn btn-sm btn-light rounded-circle me-1">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <button class="btn btn-sm btn-light rounded-circle text-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end p-3 border-top">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled"><a class="page-link" href="#">Précédent</a></li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">Suivant</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

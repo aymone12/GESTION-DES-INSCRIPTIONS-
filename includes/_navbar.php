@@ -24,8 +24,8 @@
                                 <div class="vr mx-2"></div>
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="text-end d-none d-lg-block line-height-sm">
-                                        <span class="d-block fw-bold small">Admin User</span>
-                                        <span class="d-block text-muted" style="font-size: 0.75rem;">Super Admin</span>
+                                        <span class="d-block fw-bold small">o osbt</span>
+                                        <span class="d-block text-muted" style="font-size: 0.75rem;">o@osbt.com</span>
                                     </div>
                                 </div>
                             </div>

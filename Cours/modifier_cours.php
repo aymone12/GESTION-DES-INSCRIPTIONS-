@@ -17,18 +17,7 @@ if (!$cours) {
 
 $professeurs = all_professeurs();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idProf = $_POST['idProf'];
-    $code = $_POST['code'];
-    $intitule = $_POST['intitule'];
-    $description = $_POST['description'];
-    $dureeHeures = $_POST['dureeHeures'];
-    $prix = $_POST['prix'];
 
-    modifier_cours($idProf, $code, $intitule, $description, $dureeHeures, $prix, $cours_id);
-    header("Location: index_cours.php");
-    exit();
-}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -77,7 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class="card shadow border-0 rounded-4">
                             <div class="card-body p-4 p-md-5">
-                                <form action="" method="post">
+                                <form action="update_cours.php" method="post">
+                                    <input type="hidden" name="id" value="<?=$cours['idCours']?>">
                                     <div class="mb-4">
                                         <label for="idProf" class="form-label fw-medium text-secondary">Professeur</label>
                                         <select class="form-select form-select-lg bg-light border-0" name="idProf" id="idProf" required>

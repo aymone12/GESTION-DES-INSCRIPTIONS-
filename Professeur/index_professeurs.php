@@ -1,3 +1,8 @@
+<?php
+include_once("../functions/function_professeur.php");
+
+$professeurs = all_professeurs();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -41,149 +46,104 @@
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="fw-bold mb-0 text-dark">Nos Professeurs</h3>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-primary rounded-pill shadow-sm py-2 px-3"><i
-                                    class="bi bi-plus-lg me-2"></i>Ajouter</button>
+                            <a href="create_professeur.php" class="btn btn-primary rounded-pill shadow-sm py-2 px-3">
+                                <i class="bi bi-plus-lg me-2"></i>Ajouter
+                            </a>
                         </div>
                     </div>
 
+                    <?php if (isset($_GET['success'])): ?>
+                        <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-4 mb-4" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <?php 
+                            if ($_GET['success'] == 'deleted') {
+                                echo 'Professeur supprimé avec succès !';
+                            } elseif ($_GET['success'] == 'modified') {
+                                echo 'Professeur modifié avec succès !';
+                            } else {
+                                echo 'Opération effectuée avec succès !';
+                            }
+                            ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_GET['error'])): ?>
+                        <div class="alert alert-danger alert-dismissible fade show shadow-sm rounded-4 mb-4" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo htmlspecialchars($_GET['error']); ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
                     <!-- Professors Grid -->
                     <div class="row g-4">
-                        <!-- Prof Card 1 -->
-                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="card shadow border-0 rounded-4 h-100 text-center p-3 transition-hover">
-                                <div class="card-body">
-                                    <div class="position-relative d-inline-block mb-3">
-                                        <img src="https://ui-avatars.com/api/?name=Marc+Dubois&background=0D6EFD&color=fff&size=128"
-                                            class="rounded-circle shadow-sm" width="96" height="96" alt="Avatar">
-                                        <span
-                                            class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle"></span>
-                                    </div>
-                                    <h5 class="fw-bold mb-1">Marc Dubois</h5>
-                                    <p class="text-muted small mb-3">Expert Java & Spring</p>
-                                    <div class="d-flex justify-content-center gap-2 mb-4">
-                                        <span class="badge bg-light text-secondary border rounded-pill">Java</span>
-                                        <span class="badge bg-light text-secondary border rounded-pill">Spring
-                                            Boot</span>
-                                    </div>
-                                    <div class="row g-0 border-top pt-3">
-                                        <div class="col-6 border-end">
-                                            <h6 class="fw-bold mb-0 text-dark">12</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Cours</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="fw-bold mb-0 text-dark">450+</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Étudiants</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-white border-0 pt-0 pb-3">
-                                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100">Voir le
-                                        profil</button>
+                        <?php if (empty($professeurs)): ?>
+                            <div class="col-12">
+                                <div class="text-center py-5">
+                                    <i class="bi bi-person-plus text-muted" style="font-size: 4rem;"></i>
+                                    <h4 class="text-muted mt-3">Aucun professeur</h4>
+                                    <p class="text-muted">Commencez par ajouter votre premier professeur</p>
+                                    <a href="create_professeur.php" class="btn btn-primary rounded-pill">
+                                        <i class="bi bi-plus-lg me-2"></i>Ajouter un professeur
+                                    </a>
                                 </div>
                             </div>
-                        </div>
+                        <?php else: ?>
+                            <?php foreach ($professeurs as $professeur): ?>
+                            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                                <div class="card shadow border-0 rounded-4 h-100 text-center p-3 transition-hover">
+                                    <div class="card-body">
+                                        <div class="position-relative d-inline-block mb-3">
+                                            <img src="https://ui-avatars.com/api/?name=<?= urlencode($professeur['prenom'] . '+' . $professeur['nom']) ?>&background=0D6EFD&color=fff&size=128"
+                                                class="rounded-circle shadow-sm" width="96" height="96" alt="Avatar">
+                                            <span class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle"></span>
+                                        </div>
+                                        <h5 class="fw-bold mb-1"><?= htmlspecialchars($professeur['prenom'] . ' ' . $professeur['nom']) ?></h5>
+                                        <p class="text-muted small mb-3"><?= htmlspecialchars($professeur['specialite']) ?></p>
+                                        
+                                        <?php if (!empty($professeur['email'])): ?>
+                                        <div class="mb-3">
+                                            <small class="text-muted"><i class="bi bi-envelope me-1"></i><?= htmlspecialchars($professeur['email']) ?></small>
+                                        </div>
+                                        <?php endif; ?>
 
-                        <!-- Prof Card 2 -->
-                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="card shadow border-0 rounded-4 h-100 text-center p-3 transition-hover">
-                                <div class="card-body">
-                                    <div class="position-relative d-inline-block mb-3">
-                                        <img src="https://ui-avatars.com/api/?name=Sophie+Morel&background=ffc107&color=000&size=128"
-                                            class="rounded-circle shadow-sm" width="96" height="96" alt="Avatar">
-                                        <span
-                                            class="position-absolute bottom-0 end-0 p-2 bg-warning border border-white rounded-circle"></span>
-                                    </div>
-                                    <h5 class="fw-bold mb-1">Sophie Morel</h5>
-                                    <p class="text-muted small mb-3">UX/UI Designer</p>
-                                    <div class="d-flex justify-content-center gap-2 mb-4">
-                                        <span class="badge bg-light text-secondary border rounded-pill">Figma</span>
-                                        <span class="badge bg-light text-secondary border rounded-pill">Adobe XD</span>
-                                    </div>
-                                    <div class="row g-0 border-top pt-3">
-                                        <div class="col-6 border-end">
-                                            <h6 class="fw-bold mb-0 text-dark">8</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Cours</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="fw-bold mb-0 text-dark">320+</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Étudiants</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-white border-0 pt-0 pb-3">
-                                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100">Voir le
-                                        profil</button>
-                                </div>
-                            </div>
-                        </div>
+                                        <?php
+                                        // Compter les cours du professeur
+                                        try {
+                                            include_once("../functions/function_utiles.php");
+                                            $cnx = connecter_db();
+                                            $r = $cnx->prepare("SELECT COUNT(*) as count FROM cours WHERE idProf = ?");
+                                            $r->execute([$professeur['idProf']]);
+                                            $cours_count = $r->fetch()['count'];
+                                        } catch (\Throwable $th) {
+                                            $cours_count = 0;
+                                        }
+                                        ?>
 
-                        <!-- Prof Card 3 -->
-                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="card shadow border-0 rounded-4 h-100 text-center p-3 transition-hover">
-                                <div class="card-body">
-                                    <div class="position-relative d-inline-block mb-3">
-                                        <img src="https://ui-avatars.com/api/?name=Lucas+Petit&background=6f42c1&color=fff&size=128"
-                                            class="rounded-circle shadow-sm" width="96" height="96" alt="Avatar">
-                                        <span
-                                            class="position-absolute bottom-0 end-0 p-2 bg-secondary border border-white rounded-circle"></span>
-                                    </div>
-                                    <h5 class="fw-bold mb-1">Lucas Petit</h5>
-                                    <p class="text-muted small mb-3">DevOps Engineer</p>
-                                    <div class="d-flex justify-content-center gap-2 mb-4">
-                                        <span class="badge bg-light text-secondary border rounded-pill">Docker</span>
-                                        <span class="badge bg-light text-secondary border rounded-pill">K8s</span>
-                                    </div>
-                                    <div class="row g-0 border-top pt-3">
-                                        <div class="col-6 border-end">
-                                            <h6 class="fw-bold mb-0 text-dark">5</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Cours</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="fw-bold mb-0 text-dark">150+</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Étudiants</small>
+                                        <div class="row g-0 border-top pt-3 mb-3">
+                                            <div class="col-12">
+                                                <h6 class="fw-bold mb-0 text-dark"><?= $cours_count ?></h6>
+                                                <small class="text-muted" style="font-size: 0.75rem;">Cours</small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer bg-white border-0 pt-0 pb-3">
-                                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100">Voir le
-                                        profil</button>
+                                    <div class="card-footer bg-white border-0 pt-0 pb-3">
+                                        <div class="d-flex gap-1 justify-content-center">
+                                            <a href="voir_professeur.php?id=<?= $professeur['idProf'] ?>" class="btn btn-outline-primary btn-sm rounded-pill flex-fill">
+                                                <i class="bi bi-eye me-1"></i>Voir
+                                            </a>
+                                            <a href="modifier_professeur.php?id=<?= $professeur['idProf'] ?>" class="btn btn-outline-warning btn-sm rounded-pill">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a href="delete_professeur.php?id=<?= $professeur['idProf'] ?>" class="btn btn-outline-danger btn-sm rounded-pill">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Prof Card 4 -->
-                        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="card shadow border-0 rounded-4 h-100 text-center p-3 transition-hover">
-                                <div class="card-body">
-                                    <div class="position-relative d-inline-block mb-3">
-                                        <img src="https://ui-avatars.com/api/?name=Emma+Roux&background=dc3545&color=fff&size=128"
-                                            class="rounded-circle shadow-sm" width="96" height="96" alt="Avatar">
-                                        <span
-                                            class="position-absolute bottom-0 end-0 p-2 bg-success border border-white rounded-circle"></span>
-                                    </div>
-                                    <h5 class="fw-bold mb-1">Emma Roux</h5>
-                                    <p class="text-muted small mb-3">Marketing Digital</p>
-                                    <div class="d-flex justify-content-center gap-2 mb-4">
-                                        <span class="badge bg-light text-secondary border rounded-pill">SEO</span>
-                                        <span class="badge bg-light text-secondary border rounded-pill">Ads</span>
-                                    </div>
-                                    <div class="row g-0 border-top pt-3">
-                                        <div class="col-6 border-end">
-                                            <h6 class="fw-bold mb-0 text-dark">9</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Cours</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <h6 class="fw-bold mb-0 text-dark">600+</h6>
-                                            <small class="text-muted" style="font-size: 0.75rem;">Étudiants</small>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-white border-0 pt-0 pb-3">
-                                    <button class="btn btn-outline-primary btn-sm rounded-pill w-100">Voir le
-                                        profil</button>
-                                </div>
-                            </div>
-                        </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

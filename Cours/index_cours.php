@@ -51,18 +51,6 @@ $coursList = all_cours_with_professeur();
                         <div class="d-flex gap-2">
                             <a href="create_cours.php" class="btn btn-primary rounded-pill shadow-sm py-2 px-3"><i
                                     class="bi bi-plus-lg me-2"></i>Nouveau Cours</a>
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-white bg-white border rounded-pill shadow-sm py-2 px-3 text-secondary dropdown-toggle"
-                                    type="button" data-bs-toggle="dropdown">
-                                    <i class="bi bi-filter me-2"></i>Catégorie
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Développement</a></li>
-                                    <li><a class="dropdown-item" href="#">Design</a></li>
-                                    <li><a class="dropdown-item" href="#">Marketing</a></li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
 
