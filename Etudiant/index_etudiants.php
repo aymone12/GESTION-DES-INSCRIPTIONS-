@@ -104,7 +104,7 @@ $etudiants = lister_etudiants();
                                                 <a href="modifier_etudiants.php?id=<?= $etudiant['id']; ?>" class="btn btn-sm btn-light rounded-circle me-1">
                                                     <i class="bi bi-pencil"></i>
                                                 </a>
-                                                <button class="btn btn-sm btn-light rounded-circle text-danger">
+                                                <a href="delete_etudiant.php?id=<?= $etudiant['id']; ?>" class="btn btn-sm btn-light rounded-circle text-danger me-1">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </td>
