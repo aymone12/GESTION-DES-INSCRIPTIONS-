@@ -1,4 +1,4 @@
-﻿# mini-project with yahya and douina and wiaam and meryem and me (ayman)
+﻿# mini-project with yahya and douina and wiaam and meryem and me (ayman el badri)
 # i have been give all studiant the structure for start working in this mini project 
 
 so i have working in the part cours and the template .
@@ -15,4 +15,5 @@ so i have working in the part cours and the template .
  
 
  
+
 
